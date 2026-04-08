@@ -6,7 +6,7 @@ class HomeScreen extends StatelessWidget {
   final List<Map<String, String>> places = [
     {
       'name': 'Sigiriya Rock',
-      'image': 'assets/images/place1.jpg', 
+      'image': 'assets/images/place1.jpg',
       'location': 'Dambulla, Sri Lanka',
       'rating': '4.9',
     },
@@ -24,8 +24,7 @@ class HomeScreen extends StatelessWidget {
     },
     {
       'name': 'Mirissa Beach',
-      'image':
-          'assets/images/place4.jpg', 
+      'image': 'assets/images/place4.jpg',
       'location': 'Matara, Sri Lanka',
       'rating': '4.8',
     },
@@ -34,12 +33,11 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(
-        0xFFF5F7FA,
-      ), 
+      backgroundColor: const Color(0xFFF5F7FA),
+
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
+        elevation: 0, // Remove shadow
         title: const Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -49,32 +47,29 @@ class HomeScreen extends StatelessWidget {
             ),
             Text(
               'Traveler',
-              style: TextStyle(
-                fontSize: 22,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 22, color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ],
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 16.0), // add pixel 16 padding to the right
             child: CircleAvatar(
               backgroundColor: Colors.blue[100],
               child: const Icon(
                 Icons.person,
                 color: Colors.blue,
-              ), // Profile Icon
+              ),
             ),
-          ),
+          )
         ],
       ),
+
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _buildHeroBanner(), 
+            _buildHeroBanner(),
 
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 15.0),
@@ -99,6 +94,7 @@ class HomeScreen extends StatelessWidget {
 
             _buildGridPlaces(), 
             const SizedBox(height: 20),
+
           ],
         ),
       ),
@@ -111,7 +107,7 @@ class HomeScreen extends StatelessWidget {
       child: Container(
         height: 220,
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: BoxDecoration( // mekak athule image ekak demmama image ek background ekat yanawa.. ek nisa tamai text tika image ek matha pennanne
           borderRadius: BorderRadius.circular(25),
           image: const DecorationImage(
             image: AssetImage('assets/images/banner.jpg'),
@@ -121,7 +117,7 @@ class HomeScreen extends StatelessWidget {
             BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 15, offset: const Offset(0, 8)),
           ],
         ),
-        child: Container(
+        child: Container( // container ekaka background ekata image eka demma eke text tika show wenne image ek matha
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
             gradient: LinearGradient(
@@ -176,7 +172,7 @@ class HomeScreen extends StatelessWidget {
   Widget _buildGridPlaces() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: GridView.builder(
+      child: GridView.builder( // GridView.builder eka use kale. peliyakata deka gane show krnna
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         itemCount: places.length,
@@ -212,7 +208,7 @@ class HomeScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children:[
   
-          Stack(
+          Stack( // meka use kale card eke image ekta udin rating eka show krnna
             children:[
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
@@ -254,7 +250,7 @@ class HomeScreen extends StatelessWidget {
                     children:[
                       Icon(Icons.location_on, size: 12, color: Colors.blue[400]),
                       const SizedBox(width: 3),
-                      Expanded(
+                      Expanded( // name eka hri location ek hri godak diga unoth agata thith 3k dala pennanawa lassanata
                         child: Text(location, style: const TextStyle(fontSize: 11, color: Colors.grey), maxLines: 1, overflow: TextOverflow.ellipsis),
                       ),
                     ],
@@ -267,4 +263,5 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+
 }
