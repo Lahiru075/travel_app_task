@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FacilityChip extends StatelessWidget{
+
   final IconData icon;
   final String label;
 
@@ -8,7 +9,7 @@ class FacilityChip extends StatelessWidget{
     super.key,
     required this.icon,
     required this.label,
-  })
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +21,7 @@ class FacilityChip extends StatelessWidget{
         border: Border.all(color: Colors.blue.withOpacity(0.1)),
       ),
       child: Row(
+        mainAxisSize: MainAxisSize.min, 
         children: [
           Icon(icon, size: 16, color: Colors.blue),
           const SizedBox(width: 6),
