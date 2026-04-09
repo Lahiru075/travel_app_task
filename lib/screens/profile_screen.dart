@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/profile_tile.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -103,15 +104,15 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   const Text("Account Settings", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54)),
                   const SizedBox(height: 10),
-                  _buildModernTile(Icons.person_outline, "Edit Profile", Colors.blue),
-                  _buildModernTile(Icons.history, "Travel History", Colors.orange),
-                  _buildModernTile(Icons.notifications, "Notifications", Colors.purple),
+                  ProfileTile(icon: Icons.person_outline, title: "Edit Profile", color: Colors.blue, isLogout: false),
+                  ProfileTile(icon: Icons.history, title: "Travel History", color: Colors.orange, isLogout: false),
+                  ProfileTile(icon: Icons.notifications, title: "Notifications", color: Colors.purple, isLogout: false),
 
                   const SizedBox(height: 25),
                   const Text("Support & Others", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54)),
                   const SizedBox(height: 10),
-                  _buildModernTile(Icons.help_outline, "Help Center", Colors.green),
-                  _buildModernTile(Icons.logout, "Logout", Colors.red, isLogout: true),
+                  ProfileTile(icon: Icons.help_outline, title: "Help Center", color: Colors.green, isLogout: false),
+                  ProfileTile(icon: Icons.logout, title: "Logout", color: Colors.red, isLogout: true),
                 ],
               ),
             ),
@@ -129,38 +130,6 @@ class ProfileScreen extends StatelessWidget {
         const SizedBox(height: 4),
         Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
       ],
-    );
-  }
-
-  Widget _buildModernTile(IconData icon, String title, Color color, {bool isLogout = false}){
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 5
-          ),
-        ]
-      ),
-      child: ListTile(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), // click karaddi ena issue eka fix kala
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: color.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(10)
-          ),
-          child: Icon(
-            icon, color: color, size: 20,
-          ),
-        ),
-        title: Text(title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: isLogout ? Colors.red : Colors.black87)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.black26),
-        onTap: () {},
-      ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/facility_chip.dart';
 
 class DetailsScreen extends StatefulWidget {
   const DetailsScreen({super.key});
@@ -95,11 +96,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
 
                   Row(
                     children: [
-                      _buildChip(Icons.wifi, "wifi"),
+                      FacilityChip(icon: Icons.wifi, label: "wifi"),
                       const SizedBox(width: 12),
-                      _buildChip(Icons.restaurant, "Food"),
+                      FacilityChip(icon: Icons.restaurant, label: "Food"),
                       const SizedBox(width: 12),
-                      _buildChip(Icons.map, "Guide"),
+                      FacilityChip(icon: Icons.map, label: "Guide"),
                     ],
                   ),
 
@@ -125,25 +126,5 @@ class _DetailsScreenState extends State<DetailsScreen> {
     );
   }
 
-  Widget _buildChip(IconData icon, String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: Colors.blue.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: Colors.blue.withOpacity(0.1)),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 16, color: Colors.blue),
-          const SizedBox(width: 6),
-          Text(
-            label, 
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: Colors.black87),
-          )
-        ],
-      ),
-    );
-  }
 
 }
