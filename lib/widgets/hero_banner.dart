@@ -20,7 +20,7 @@ class HeroBanner extends StatelessWidget {
             BoxShadow(color: Colors.black.withOpacity(0.15), blurRadius: 15, offset: const Offset(0, 8)),
           ],
         ),
-        child: Container( // container ekaka background ekata image eka demma eke text tika show wenne image ek matha
+        child: Container( // container ekaka background ekata image eka demma eke text tika show wenne image ek matha.. 
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(25),
             gradient: LinearGradient(
@@ -37,7 +37,7 @@ class HeroBanner extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children:[
            
-              Container(
+              Container( // container ekk kiyanne multi purpose widget ekka. widget ekk box ekk wge fram ekakat dala style krnn mek use krnn puluwn
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.2), 

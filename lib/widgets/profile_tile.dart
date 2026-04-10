@@ -28,9 +28,9 @@ class ProfileTile extends StatelessWidget {
           ),
         ]
       ),
-      child: ListTile(
+      child: ListTile( // details piliwelata show krnn tiyana widget ekka
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)), // click karaddi ena issue eka fix kala
-        leading: Container(
+        leading: Container( // left side eka show krnn tiyana widget ekka
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
             color: color.withOpacity(0.1),
@@ -40,8 +40,8 @@ class ProfileTile extends StatelessWidget {
             icon, color: color, size: 20,
           ),
         ),
-        title: Text(title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: isLogout ? Colors.red : Colors.black87)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.black26),
+        title: Text(title, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: isLogout ? Colors.red : Colors.black87)),// center eke show wela widget ekak
+        trailing: const Icon(Icons.arrow_forward_ios, size: 14, color: Colors.black26), // right side eka show krnn tiyana widget ekka
         onTap: () {},
       ),
     );

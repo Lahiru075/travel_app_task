@@ -26,7 +26,7 @@ class CustomBottomNav extends StatelessWidget{
         unselectedItemColor: Colors.grey,
         showSelectedLabels: true,
         showUnselectedLabels: false,
-        type: BottomNavigationBarType.fixed, // 
+        type: BottomNavigationBarType.fixed, 
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home_outlined),
