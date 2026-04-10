@@ -13,3 +13,5 @@ class Place {
     required this.description,
   });
 }
+
+List<Place> globalFavorites = [];

@@ -12,7 +12,14 @@ class DetailsScreen extends StatefulWidget {
 }
 
 class _DetailsScreenState extends State<DetailsScreen> {
-  bool isFavorite = false;
+  late bool isFavorite; 
+
+  @override
+  void initState() {
+    super.initState();
+
+    isFavorite = globalFavorites.any((item) => item.name == widget.place.name);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +73,15 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       onPressed: () {
                         setState(() {
                           isFavorite = !isFavorite;
+                          if (isFavorite) {
+                            globalFavorites.add(
+                              widget.place,
+                            ); 
+                          } else {
+                            globalFavorites.removeWhere(
+                              (item) => item.name == widget.place.name,
+                            ); 
+                          }
                         });
                       },
                     ),

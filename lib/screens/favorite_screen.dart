@@ -1,23 +1,12 @@
 import 'package:flutter/material.dart';
 import '../widgets/favorite_card.dart';
+import '../models/place_model.dart';
 
 class FavoritesScreen extends StatelessWidget {
+
   FavoritesScreen({super.key});
 
-  final List<Map<String, String>> favoritePlaces = [
-    {
-      'name': 'Sigiriya Rock',
-      'image': 'assets/images/place1.jpg',
-      'location': 'Dambulla, Sri Lanka',
-      'rating': '4.9',
-    },
-    {
-      'name': 'Nine Arch Bridge',
-      'image': 'assets/images/place2.jpg',
-      'location': 'Ella, Sri Lanka',
-      'rating': '4.8',
-    },
-  ];
+  final List<Place> favoritePlaces = globalFavorites; 
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +32,7 @@ class FavoritesScreen extends StatelessWidget {
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
               Icons.favorite_outline_rounded,
@@ -80,7 +69,7 @@ class FavoritesScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       itemCount: favoritePlaces.length,
       itemBuilder: (context, index) {
-        final place = favoritePlaces[index];
+        Place place = favoritePlaces[index];
         return FavoriteCard(place: place);
       },
     );

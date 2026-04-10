@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import '../models/place_model.dart';
 
 class FavoriteCard extends StatelessWidget{
-  final Map<String, String> place;
+  final Place place;
 
   const FavoriteCard({super.key, required this.place});
 
@@ -27,7 +28,7 @@ class FavoriteCard extends StatelessWidget{
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image.asset(
-                place['image']!,
+                place.image,
                 width: 100,
                 height: 100,
                 fit: BoxFit.cover,
@@ -45,7 +46,7 @@ class FavoriteCard extends StatelessWidget{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    place['name']!,
+                    place.name,
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -65,7 +66,7 @@ class FavoriteCard extends StatelessWidget{
                       const SizedBox(width: 4),
                       Expanded(
                         child: Text(
-                          place['location']!,
+                          place.location,
                           style: const TextStyle(
                             fontSize: 12,
                             color: Colors.grey,
@@ -93,7 +94,7 @@ class FavoriteCard extends StatelessWidget{
                         const Icon(Icons.star, color: Colors.orange, size: 14),
                         const SizedBox(width: 4),
                         Text(
-                          place['rating']!,
+                          place.rating,
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,
