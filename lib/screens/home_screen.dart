@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:travel_app_task/models/place_model.dart';
 import '../widgets/place_card.dart';
 import '../widgets/hero_banner.dart';
-import '../widgets/place_card.dart';
 import 'details_screen.dart';
 
 class HomeScreen extends StatelessWidget {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'profile_screen.dart';
+import 'favorite_screen.dart';
 import '../widgets/custom_bottom_nav.dart';
 
 class MainScreen extends StatefulWidget{
@@ -15,12 +16,7 @@ class _MainScreenState extends State<MainScreen> {
 
   final List<Widget> _pages = [
     HomeScreen(),
-    Container(
-      color: Colors.white,
-      child: Center(
-        child: Text('Favorite Page not implemented yet'),
-      ),
-    ),
+    FavoritesScreen(),
     ProfileScreen(),
   ];
 
