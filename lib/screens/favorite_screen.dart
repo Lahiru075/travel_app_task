@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 import '../widgets/favorite_card.dart';
 import '../models/place_model.dart';
+import '../screens/details_screen.dart'; 
 
-class FavoritesScreen extends StatelessWidget {
+class FavoritesScreen extends StatefulWidget {
+  const FavoritesScreen({super.key});
 
-  FavoritesScreen({super.key});
+  @override
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
+}
 
-  final List<Place> favoritePlaces = globalFavorites; 
+class _FavoritesScreenState extends State<FavoritesScreen> {
+
+  final List<Place> favoritePlaces = globalFavorites;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +27,14 @@ class FavoritesScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
       ),
+
       body: favoritePlaces.isEmpty
-      ? _buildEmptyState()
-      : _buildFavoritesList(),
+          ? _buildEmptyState()
+          : _buildFavoritesList(),
     );
   }
 
-  Widget _buildEmptyState(){
+  Widget _buildEmptyState() {
     return Center(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -39,9 +46,7 @@ class FavoritesScreen extends StatelessWidget {
               size: 100,
               color: Colors.grey[300],
             ),
-
             const SizedBox(height: 20),
-
             const Text(
               'No favorites yet!',
               style: TextStyle(
@@ -50,9 +55,7 @@ class FavoritesScreen extends StatelessWidget {
                 color: Colors.black54,
               ),
             ),
-
             const SizedBox(height: 10),
-
             const Text(
               "Explore the best places and tap the heart icon to save your favorite destinations here.",
               textAlign: TextAlign.center,
@@ -64,13 +67,27 @@ class FavoritesScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildFavoritesList(){
+  Widget _buildFavoritesList() {
     return ListView.builder(
       padding: const EdgeInsets.all(16),
       itemCount: favoritePlaces.length,
-      itemBuilder: (context, index) {
-        Place place = favoritePlaces[index];
-        return FavoriteCard(place: place);
+      itemBuilder: ( context, index) {
+        final place = favoritePlaces[index];
+
+        return GestureDetector(
+          onTap: () async {
+
+            await Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DetailsScreen(place: place),
+              ),
+            );
+
+            setState(() {}); 
+          },
+          child: FavoriteCard(place: place),
+        );
       },
     );
   }

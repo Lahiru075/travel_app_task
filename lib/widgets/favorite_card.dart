@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import '../models/place_model.dart';
 
-class FavoriteCard extends StatelessWidget{
+class FavoriteCard extends StatelessWidget {
   final Place place;
 
   const FavoriteCard({super.key, required this.place});
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(25), 
+        borderRadius: BorderRadius.circular(25),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
@@ -24,7 +25,7 @@ class FavoriteCard extends StatelessWidget{
       child: Row(
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0), 
+            padding: const EdgeInsets.all(10.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: Image.asset(
@@ -35,7 +36,6 @@ class FavoriteCard extends StatelessWidget{
               ),
             ),
           ),
-
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(
@@ -78,7 +78,6 @@ class FavoriteCard extends StatelessWidget{
                     ],
                   ),
                   const SizedBox(height: 12),
-
                   Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 8,
@@ -108,7 +107,6 @@ class FavoriteCard extends StatelessWidget{
               ),
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.only(right: 16.0),
             child: Icon(Icons.favorite, color: Colors.red[400], size: 26),
