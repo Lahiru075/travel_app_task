@@ -68,13 +68,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
   }
 
   Widget _buildFavoritesList() {
-    return ListView.builder(
+    return ListView.builder(  // eka line ekaka thiyenne ek item ekak witari
       padding: const EdgeInsets.all(16),
       itemCount: favoritePlaces.length,
       itemBuilder: ( context, index) {
         final place = favoritePlaces[index];
 
-        return GestureDetector(
+        return GestureDetector( // card ek click kalama mokak hri deyak wenn oni nm mek use krnna puluwn
           onTap: () async {
 
             await Navigator.push(

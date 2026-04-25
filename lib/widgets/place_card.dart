@@ -31,7 +31,7 @@ class PlaceCard extends StatelessWidget{
   
           Stack( // meka use kale card eke image ekta udin rating eka show krnna
             children:[
-              ClipRRect(
+              ClipRRect( // mek use kranne image eke corners rounded krnna
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
                 child: Image.asset(image, height: 110, width: double.infinity, fit: BoxFit.cover), 
               ),

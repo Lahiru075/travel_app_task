@@ -51,7 +51,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 Positioned(
                   top: 65,
                   left: 30,
-                  child: GestureDetector(
+                  child: GestureDetector( // userge action ekata react wenna
                     onTap: () => Navigator.pop(context),
                     child: CircleAvatar(
                       backgroundColor: Colors.white.withOpacity(0.9),
