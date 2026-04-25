@@ -65,10 +65,9 @@ To ensure maintainability and scalability, the project follows a clean folder st
 
 ## 📸 Screenshots
 
-Home Screen: ![Home Screen](screenshots/home.jpeg)
-Details Screen: ![Details Screen](screenshots/details.jpeg)
-Favorites Screen: ![Favorites Screen](screenshots/favorites.jpeg)
-Profile Screen: ![Profile Screen](screenshots/profile.jpeg)
+| Home Screen | Details Screen | Favorites Screen | Profile Screen |
+| :---: | :---: | :---: | :---: |
+| <img src="screenshots/home.jpeg" width="200"> | <img src="screenshots/details.jpeg" width="200"> | <img src="screenshots/favorites.jpeg" width="200"> | <img src="screenshots/profile.jpeg" width="200"> |
 
 ---
 
