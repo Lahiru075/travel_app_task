@@ -43,7 +43,7 @@ To ensure maintainability and scalability, the project follows a clean folder st
 ## 📦 Installation & Setup
 1. Clone this repository:
    ```bash
-   git clone https://github.com/your-username/travel_app_task.git
+   git clone https://github.com/Lahiru075/travel_app_task.git
    ```
    
 2. Navigate to the project folder:
