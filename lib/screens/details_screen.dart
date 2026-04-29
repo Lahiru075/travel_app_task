@@ -1,24 +1,52 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/place_provider.dart';
 import '../widgets/facility_chip.dart';
 import '../models/place_model.dart';
 
-class DetailsScreen extends StatefulWidget {
+class DetailsScreen extends ConsumerStatefulWidget {
   final Place place;
-
   const DetailsScreen({super.key, required this.place});
 
   @override
-  State<DetailsScreen> createState() => _DetailsScreenState();
+  ConsumerState<DetailsScreen> createState() => _DetailsScreenState();
 }
 
-class _DetailsScreenState extends State<DetailsScreen> {
+class _DetailsScreenState extends ConsumerState<DetailsScreen> {
   late bool isFavorite; 
 
   @override
   void initState() {
     super.initState();
 
-    isFavorite = globalFavorites.any((item) => item.name == widget.place.name);
+    isFavorite = false;
+    _checkIfFavorite();
+  }
+
+  void _checkIfFavorite() {
+    final favorites = ref.read(favoritesProvider).value ?? [];
+    setState(() {
+      isFavorite = favorites.any((item) => item.id == widget.place.id);
+    });
+  }
+
+  Future<void> _handleFavoriteToggle() async {
+    setState(() {
+      isFavorite = !isFavorite;
+    });
+
+    final success = await ref.read(apiServiceProvider).toggleFavorite(widget.place.id);
+
+    if (success) {
+      ref.invalidate(favoritesProvider); // refresh the favorite places
+    } else {
+      setState(() {
+        isFavorite = !isFavorite;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to toggle favorite')),
+      );
+    }
   }
 
   @override
@@ -30,19 +58,21 @@ class _DetailsScreenState extends State<DetailsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-            Stack(
-              // meka overlay widget ekak.. meken puluwn widget ekak uda ekak thiyanna
+            Stack( // meka overlay widget ekak.. meken puluwn widget ekak uda ekak thiyanna
               children: [
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 50, 16, 20),
-                  child: Container(
-                    height: 350,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      image: DecorationImage(
-                        image: AssetImage(widget.place.image),
-                        fit: BoxFit.cover,
+                Hero(
+                  tag: widget.place.id,
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 50, 16, 20),
+                    child: Container(
+                      height: 350,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        image: DecorationImage(
+                          image: AssetImage(widget.place.image),
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),
@@ -70,20 +100,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         isFavorite ? Icons.favorite : Icons.favorite_border,
                         color: isFavorite ? Colors.red : Colors.black,
                       ),
-                      onPressed: () {
-                        setState(() {
-                          isFavorite = !isFavorite;
-                          if (isFavorite) {
-                            globalFavorites.add(
-                              widget.place,
-                            ); 
-                          } else {
-                            globalFavorites.removeWhere(
-                              (item) => item.name == widget.place.name,
-                            ); 
-                          }
-                        });
-                      },
+                      onPressed:_handleFavoriteToggle,
                     ),
                   ),
                 ),
@@ -97,7 +114,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.place.name,
+                    widget.place.title,
                     style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
                   ),
 

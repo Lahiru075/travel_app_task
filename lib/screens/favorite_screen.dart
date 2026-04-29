@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
+import '../providers/place_provider.dart';
 import '../widgets/favorite_card.dart';
-import '../models/place_model.dart';
-import '../screens/details_screen.dart'; 
+import '../screens/details_screen.dart';
 
-class FavoritesScreen extends StatefulWidget {
+class FavoritesScreen extends ConsumerWidget {
   const FavoritesScreen({super.key});
 
   @override
-  State<FavoritesScreen> createState() => _FavoritesScreenState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final favoritesAsync = ref.watch(favoritesProvider);
 
-class _FavoritesScreenState extends State<FavoritesScreen> {
-
-  final List<Place> favoritePlaces = globalFavorites;
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
@@ -28,9 +24,16 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         centerTitle: true,
       ),
 
-      body: favoritePlaces.isEmpty
-          ? _buildEmptyState()
-          : _buildFavoritesList(),
+      body: favoritesAsync.when(
+        data: (favoritePlaces) => favoritePlaces.isEmpty
+            ? _buildEmptyState()
+            : RefreshIndicator(
+                onRefresh: () => ref.refresh(favoritesProvider.future),
+                child: _buildFavoritesList(context, favoritePlaces),
+              ),
+        loading: () => _buildShimmerLoading(),
+        error: (error, stack) => Center(child: Text('Error: $error')),
+      ),
     );
   }
 
@@ -67,28 +70,46 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-  Widget _buildFavoritesList() {
-    return ListView.builder(  // eka line ekaka thiyenne ek item ekak witari
+  Widget _buildFavoritesList(BuildContext context, List favoritePlaces) {
+    return ListView.builder(
+      // eka line ekaka thiyenne ek item ekak witari
       padding: const EdgeInsets.all(16),
       itemCount: favoritePlaces.length,
-      itemBuilder: ( context, index) {
+      itemBuilder: (context, index) {
         final place = favoritePlaces[index];
 
-        return GestureDetector( // card ek click kalama mokak hri deyak wenn oni nm mek use krnna puluwn
+        return GestureDetector(
+          // card ek click kalama mokak hri deyak wenn oni nm mek use krnna puluwn
           onTap: () async {
-
             await Navigator.push(
               context,
               MaterialPageRoute(
                 builder: (context) => DetailsScreen(place: place),
               ),
             );
-
-            setState(() {}); 
           },
           child: FavoriteCard(place: place),
         );
       },
+    );
+  }
+
+  Widget _buildShimmerLoading() {
+    return Shimmer.fromColors(
+      baseColor: Colors.grey[300]!,
+      highlightColor: Colors.grey[100]!,
+      child: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: 5,
+        itemBuilder: (context, index) => Container(
+          height: 100,
+          margin: const EdgeInsets.only(bottom: 15),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
     );
   }
 }
