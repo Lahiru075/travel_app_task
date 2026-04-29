@@ -13,12 +13,11 @@ class DetailsScreen extends ConsumerStatefulWidget {
 }
 
 class _DetailsScreenState extends ConsumerState<DetailsScreen> {
-  late bool isFavorite; 
+  late bool isFavorite;
 
   @override
   void initState() {
     super.initState();
-
     isFavorite = false;
     _checkIfFavorite();
   }
@@ -38,7 +37,7 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
     final success = await ref.read(apiServiceProvider).toggleFavorite(widget.place.id);
 
     if (success) {
-      ref.invalidate(favoritesProvider); // refresh the favorite places
+      ref.invalidate(favoritesProvider);
     } else {
       setState(() {
         isFavorite = !isFavorite;
@@ -56,32 +55,39 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
-            Stack( // meka overlay widget ekak.. meken puluwn widget ekak uda ekak thiyanna
+            // Top Image Section with Back and Favorite buttons
+            Stack(
               children: [
                 Hero(
                   tag: widget.place.id,
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(16, 50, 16, 20),
                     child: Container(
-                      height: 350,
+                      height: 380, 
                       width: double.infinity,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         image: DecorationImage(
-                          image: AssetImage(widget.place.image),
+                          image: NetworkImage(widget.place.image),
                           fit: BoxFit.cover,
                         ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 5),
+                          ),
+                        ],
                       ),
                     ),
                   ),
                 ),
-
+                // Back Button
                 Positioned(
                   top: 65,
                   left: 30,
-                  child: GestureDetector( // userge action ekata react wenna
+                  child: GestureDetector(
                     onTap: () => Navigator.pop(context),
                     child: CircleAvatar(
                       backgroundColor: Colors.white.withOpacity(0.9),
@@ -89,7 +95,7 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                     ),
                   ),
                 ),
-
+                // Favorite Button
                 Positioned(
                   top: 65,
                   right: 30,
@@ -100,63 +106,51 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                         isFavorite ? Icons.favorite : Icons.favorite_border,
                         color: isFavorite ? Colors.red : Colors.black,
                       ),
-                      onPressed:_handleFavoriteToggle,
+                      onPressed: _handleFavoriteToggle,
                     ),
                   ),
                 ),
               ],
             ),
 
+            // Details Section
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 24.0),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     widget.place.title,
-                    style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
+                    style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
                   ),
-
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      const Icon(
-                        Icons.location_on,
-                        color: Colors.blue,
-                        size: 16,
-                      ),
+                      const Icon(Icons.location_on, color: Colors.blue, size: 18),
                       const SizedBox(width: 4),
                       Text(
                         widget.place.location,
-                        style: TextStyle(color: Colors.grey, fontSize: 14),
+                        style: const TextStyle(color: Colors.grey, fontSize: 15),
                       ),
                       const Spacer(),
-                      const Icon(Icons.star, color: Colors.orange, size: 16),
+                      const Icon(Icons.star, color: Colors.orange, size: 18),
                       Text(
                         ' ${widget.place.rating}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 25),
-
-                  Row(
+                  // Facilities Section
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      FacilityChip(icon: Icons.wifi, label: "wifi"),
-                      const SizedBox(width: 12),
+                      FacilityChip(icon: Icons.wifi, label: "Wifi"),
                       FacilityChip(icon: Icons.restaurant, label: "Food"),
-                      const SizedBox(width: 12),
                       FacilityChip(icon: Icons.map, label: "Guide"),
                     ],
                   ),
-
                   const SizedBox(height: 30),
-
                   const Text(
                     'About Destination',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -164,13 +158,14 @@ class _DetailsScreenState extends ConsumerState<DetailsScreen> {
                   const SizedBox(height: 12),
                   Text(
                     widget.place.description,
-                    style: TextStyle(
+                    textAlign: TextAlign.justify,
+                    style: const TextStyle(
                       color: Colors.black54,
                       fontSize: 15,
                       height: 1.6,
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 40),
                 ],
               ),
             ),

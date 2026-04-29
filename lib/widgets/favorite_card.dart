@@ -8,7 +8,6 @@ class FavoriteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
@@ -28,11 +27,17 @@ class FavoriteCard extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: Image.asset(
+              child: Image.network( 
                 place.image,
                 width: 100,
                 height: 100,
                 fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.grey[200],
+                  child: const Icon(Icons.broken_image, color: Colors.grey),
+                ),
               ),
             ),
           ),
@@ -46,7 +51,7 @@ class FavoriteCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    place.name,
+                    place.title,
                     style: const TextStyle(
                       fontSize: 17,
                       fontWeight: FontWeight.bold,
@@ -93,7 +98,7 @@ class FavoriteCard extends StatelessWidget {
                         const Icon(Icons.star, color: Colors.orange, size: 14),
                         const SizedBox(width: 4),
                         Text(
-                          place.rating,
+                          place.rating.toString(), 
                           style: const TextStyle(
                             fontSize: 12,
                             fontWeight: FontWeight.bold,

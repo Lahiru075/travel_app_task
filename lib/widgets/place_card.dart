@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PlaceCard extends StatelessWidget{
-  
+class PlaceCard extends StatelessWidget {
   final String title;
   final String image;
   final String location;
@@ -21,58 +20,83 @@ class PlaceCard extends StatelessWidget{
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
-        boxShadow:[
-          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 5)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
         ],
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children:[
-  
-          Stack( // meka use kale card eke image ekta udin rating eka show krnna
-            children:[
-              ClipRRect( // mek use kranne image eke corners rounded krnna
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
-                child: Image.asset(image, height: 110, width: double.infinity, fit: BoxFit.cover), 
-              ),
-              Positioned(
-                top: 8,
-                right: 8,
-                child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.9),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children:[
-                      const Icon(Icons.star, color: Colors.orange, size: 12),
-                      const SizedBox(width: 2),
-                      Text(rating, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold)),
-                    ],
+        children: [
+          Expanded(
+            flex: 6, 
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                  child: Image.network(
+                    image,
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover, 
                   ),
                 ),
-              ),
-            ],
+                Positioned(
+                  top: 10,
+                  right: 10,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.9),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.star, color: Colors.orange, size: 12),
+                        const SizedBox(width: 2),
+                        Text(
+                          rating,
+                          style: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-          
 
           Expanded(
+            flex: 4, 
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center, 
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children:[
-                  Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis),
+                children: [
+                  Text(
+                    title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                   const SizedBox(height: 4),
                   Row(
-                    children:[
-                      Icon(Icons.location_on, size: 12, color: Colors.blue[400]),
-                      const SizedBox(width: 3),
-                      Expanded( // name eka hri location ek hri godak diga unoth agata thith 3k dala pennanawa lassanata
-                        child: Text(location, style: const TextStyle(fontSize: 11, color: Colors.grey), maxLines: 1, overflow: TextOverflow.ellipsis),
+                    children: [
+                      const Icon(Icons.location_on, color: Colors.blue, size: 14),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          location,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: Colors.grey, fontSize: 12),
+                        ),
                       ),
                     ],
                   ),

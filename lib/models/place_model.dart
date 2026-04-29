@@ -17,12 +17,12 @@ class Place {
 
   factory Place.formJson(Map<String, dynamic> json) {
     return Place(
-      id: json['id'] as String,
-      title: json['title'] as String,
-      image: json['image'] as String,
-      location: json['location'] as String,
-      rating: json['rating'] as String,
-      description: json['description'] as String,
+      id: json['_id']?.toString() ?? "",
+      title: json['title']?.toString() ?? "No Title",
+      location: json['location']?.toString() ?? "Unknown Location",
+      description: json['description']?.toString() ?? "",
+      image: json['image']?.toString() ?? "",
+      rating: json['rating']?.toString() ??  "0.0",
     );
   }
 
