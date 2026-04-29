@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 class PlaceCard extends StatelessWidget{
   
-  final String name;
+  final String title;
   final String image;
   final String location;
   final String rating;
 
   const PlaceCard({
     super.key,
-    required this.name,
+    required this.title,
     required this.image,
     required this.location,
     required this.rating,
@@ -65,7 +65,7 @@ class PlaceCard extends StatelessWidget{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children:[
-                  Text(name, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis),
+                  Text(title, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold), maxLines: 1, overflow: TextOverflow.ellipsis),
                   const SizedBox(height: 4),
                   Row(
                     children:[
