@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
-
   static const String baseUrl = "http://10.104.220.239:5000/api/auth";
 
   Future<bool> register(String name, String email, String password) async {
@@ -11,14 +10,10 @@ class AuthService {
       final response = await http.post(
         Uri.parse('$baseUrl/register'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'name': name,
-          'email': email,
-          'password': password,
-        }),
+        body: jsonEncode({'name': name, 'email': email, 'password': password}),
       );
 
-      return response.statusCode == 201; 
+      return response.statusCode == 201;
     } catch (e) {
       print("Register Error: $e");
       return false;
@@ -30,19 +25,18 @@ class AuthService {
       final response = await http.post(
         Uri.parse('$baseUrl/login'),
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-        }),
+        body: jsonEncode({'email': email, 'password': password}),
       );
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body);
 
         final prefs = await SharedPreferences.getInstance();
+
         await prefs.setString('accessToken', data['accessToken']);
         await prefs.setString('refreshToken', data['refreshToken']);
-        
+        await prefs.setString('userName', data['result']['name']);
+
         return true;
       }
       return false;
@@ -58,9 +52,13 @@ class AuthService {
     await prefs.remove('refreshToken');
   }
 
-
   Future<String?> getToken() async {
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString('accessToken');
+  }
+
+  Future<String?> getUserName() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userName');
   }
 }

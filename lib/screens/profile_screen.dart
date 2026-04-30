@@ -1,11 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:travel_app_task/providers/auth_provider.dart';
 import '../widgets/profile_tile.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
+  void _showLogoutDialog(BuildContext context, WidgetRef ref) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: const Text("Logout"),
+        content: const Text("Are you sure you want to sign out?"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cancel", style: TextStyle(color: Colors.grey)),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              ref.read(authProvider.notifier).logout(); // Logout action
+            },
+            child: const Text(
+              "Logout",
+              style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+
     return Scaffold(
       backgroundColor: const Color(0xFFF5F7FA),
       appBar: AppBar(
@@ -31,25 +62,31 @@ class ProfileScreen extends StatelessWidget {
                       color: Colors.blue,
                       shape: BoxShape.circle,
                     ),
-                    child: CircleAvatar(
+                    child: const CircleAvatar(
                       radius: 55,
                       backgroundColor: Colors.white,
                       child: CircleAvatar(
                         radius: 52,
-                        backgroundImage: AssetImage('assets/images/profile.jpg'),
+                        backgroundImage: AssetImage(
+                          'assets/images/profile.jpg',
+                        ),
                       ),
                     ),
                   ),
                   Positioned(
-                    bottom:0,
+                    bottom: 0,
                     right: 4,
                     child: CircleAvatar(
                       radius: 16,
                       backgroundColor: Colors.white,
-                      child: CircleAvatar(
+                      child: const CircleAvatar(
                         radius: 14,
                         backgroundColor: Colors.blue,
-                        child: const Icon(Icons.camera_alt, size: 14, color: Colors.white),
+                        child: Icon(
+                          Icons.camera_alt,
+                          size: 14,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -59,17 +96,21 @@ class ProfileScreen extends StatelessWidget {
 
             const SizedBox(height: 15),
 
-            const Text(
-              'Lahiru Lakshan',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+            Text(
+              authState.userName ?? 'Pro Traveler',
+              style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
             ),
             const Text(
-              'Pro Traveler 🌍',
-              style: TextStyle(fontSize: 14, color: Colors.blue, fontWeight: FontWeight.w500),
+              'Explorer 🌍',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.blue,
+                fontWeight: FontWeight.w500,
+              ),
             ),
 
             const SizedBox(height: 25),
-            
+
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
@@ -80,9 +121,9 @@ class ProfileScreen extends StatelessWidget {
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.02),
-                      blurRadius: 10
-                    )
-                  ]
+                      blurRadius: 10,
+                    ),
+                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -102,17 +143,61 @@ class ProfileScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text("Account Settings", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54)),
+                  const Text(
+                    "Account Settings",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black54,
+                    ),
+                  ),
                   const SizedBox(height: 10),
-                  ProfileTile(icon: Icons.person_outline, title: "Edit Profile", color: Colors.blue, isLogout: false),
-                  ProfileTile(icon: Icons.history, title: "Travel History", color: Colors.orange, isLogout: false),
-                  ProfileTile(icon: Icons.notifications, title: "Notifications", color: Colors.purple, isLogout: false),
+                  const ProfileTile(
+                    icon: Icons.person_outline,
+                    title: "Edit Profile",
+                    color: Colors.blue,
+                    isLogout: false,
+                  ),
+                  const ProfileTile(
+                    icon: Icons.history,
+                    title: "Travel History",
+                    color: Colors.orange,
+                    isLogout: false,
+                  ),
+                  const ProfileTile(
+                    icon: Icons.notifications,
+                    title: "Notifications",
+                    color: Colors.purple,
+                    isLogout: false,
+                  ),
 
                   const SizedBox(height: 25),
-                  const Text("Support & Others", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black54)),
+                  const Text(
+                    "Support & Others",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black54,
+                    ),
+                  ),
                   const SizedBox(height: 10),
-                  ProfileTile(icon: Icons.help_outline, title: "Help Center", color: Colors.green, isLogout: false),
-                  ProfileTile(icon: Icons.logout, title: "Logout", color: Colors.red, isLogout: true),
+                  const ProfileTile(
+                    icon: Icons.help_outline,
+                    title: "Help Center",
+                    color: Colors.green,
+                    isLogout: false,
+                  ),
+
+                  // 4. Logout Action
+                  GestureDetector(
+                    onTap: () => _showLogoutDialog(context, ref),
+                    child: const ProfileTile(
+                      icon: Icons.logout,
+                      title: "Logout",
+                      color: Colors.red,
+                      isLogout: true,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -123,10 +208,13 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatItem(String label, String value){
+  Widget _buildStatItem(String label, String value) {
     return Column(
       children: [
-        Text(value, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+        Text(
+          value,
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
         const SizedBox(height: 4),
         Text(label, style: const TextStyle(fontSize: 12, color: Colors.grey)),
       ],

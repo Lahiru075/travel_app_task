@@ -4,8 +4,13 @@ import '../services/auth_service.dart';
 class AuthState {
   final bool isAuthenticated;
   final bool isLoading;
+  final String? userName; 
 
-  AuthState({required this.isAuthenticated, this.isLoading = false});
+  AuthState({
+    required this.isAuthenticated, 
+    this.isLoading = false, 
+    this.userName,
+  });
 }
 
 final authServiceProvider = Provider((ref) => AuthService());
@@ -19,17 +24,20 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> _checkInitialAuth() async {
     final token = await _authService.getToken();
+    final name = await _authService.getUserName(); 
     if (token != null) {
-      state = AuthState(isAuthenticated: true);
+      state = AuthState(isAuthenticated: true, userName: name);
     }
   }
+
 
   Future<bool> login(String email, String password) async {
     state = AuthState(isAuthenticated: false, isLoading: true);
     final success = await _authService.login(email, password);
     
     if (success) {
-      state = AuthState(isAuthenticated: true, isLoading: false);
+      final name = await _authService.getUserName(); 
+      state = AuthState(isAuthenticated: true, isLoading: false, userName: name);
     } else {
       state = AuthState(isAuthenticated: false, isLoading: false);
     }
@@ -45,7 +53,7 @@ class AuthNotifier extends StateNotifier<AuthState> {
 
   Future<void> logout() async {
     await _authService.logout();
-    state = AuthState(isAuthenticated: false);
+    state = AuthState(isAuthenticated: false, userName: null);
   }
 }
 

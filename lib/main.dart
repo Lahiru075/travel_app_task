@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:travel_app_task/providers/auth_provider.dart';
+import 'package:travel_app_task/screens/main_screen.dart';
 import 'screens/landing_screen.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,7 +24,22 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
 
-      home: const LandingScreen(),
+      home: const AuthWrapper(),
     );
+  }
+}
+
+class AuthWrapper extends ConsumerWidget {
+  const AuthWrapper({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final authState = ref.watch(authProvider);
+
+    if (authState.isAuthenticated) {
+      return const MainScreen();
+    } else {
+      return const LandingScreen();
+    }
   }
 }
