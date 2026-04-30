@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/auth_provider.dart';
 import 'login_screen.dart';
 
-class SignupScreen extends StatefulWidget {
+class SignupScreen extends ConsumerStatefulWidget {
   const SignupScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  ConsumerState<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _SignupScreenState extends ConsumerState<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
+
+  final _nameController = TextEditingController();
+  final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
@@ -17,7 +22,57 @@ class _SignupScreenState extends State<SignupScreen> {
   bool _isConfirmPasswordVisible = false;
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleSignup() async {
+    if (_formKey.currentState!.validate()) {
+      final success = await ref
+          .read(authProvider.notifier)
+          .register(
+            _nameController.text.trim(),
+            _emailController.text.trim(),
+            _passwordController.text.trim(),
+          );
+
+      if (success) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Account created successfully! Please login."),
+              backgroundColor: Colors.green,
+            ),
+          );
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => const LoginScreen()),
+          );
+        }
+      } else {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                "Registration failed. Email might be already in use.",
+              ),
+              backgroundColor: Colors.redAccent,
+            ),
+          );
+        }
+      }
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final authState = ref.watch(authProvider);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -41,7 +96,6 @@ class _SignupScreenState extends State<SignupScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 10),
-                // --- Header Section ---
                 Center(
                   child: Container(
                     padding: const EdgeInsets.all(16),
@@ -79,10 +133,14 @@ class _SignupScreenState extends State<SignupScreen> {
                 _buildLabel("Full Name"),
                 const SizedBox(height: 10),
                 TextFormField(
+                  controller: _nameController,
                   decoration: _inputStyle(
                     "Enter your full name",
                     Icons.person_outline_rounded,
                   ),
+                  validator: (value) => value == null || value.isEmpty
+                      ? "Name is required"
+                      : null,
                 ),
 
                 const SizedBox(height: 20),
@@ -90,11 +148,18 @@ class _SignupScreenState extends State<SignupScreen> {
                 _buildLabel("Email Address"),
                 const SizedBox(height: 10),
                 TextFormField(
+                  controller: _emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: _inputStyle(
                     "Enter your email",
                     Icons.alternate_email_rounded,
                   ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty)
+                      return "Email is required";
+                    if (!value.contains('@')) return "Enter a valid email";
+                    return null;
+                  },
                 ),
 
                 const SizedBox(height: 20),
@@ -113,6 +178,9 @@ class _SignupScreenState extends State<SignupScreen> {
                       () => _isPasswordVisible = !_isPasswordVisible,
                     ),
                   ),
+                  validator: (value) => value != null && value.length < 6
+                      ? "Min 6 characters required"
+                      : null,
                 ),
 
                 const SizedBox(height: 20),
@@ -132,6 +200,9 @@ class _SignupScreenState extends State<SignupScreen> {
                           !_isConfirmPasswordVisible,
                     ),
                   ),
+                  validator: (value) => value != _passwordController.text
+                      ? "Passwords do not match"
+                      : null,
                 ),
 
                 const SizedBox(height: 40),
@@ -148,16 +219,23 @@ class _SignupScreenState extends State<SignupScreen> {
                       ),
                       elevation: 0,
                     ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {}
-                    },
-                    child: const Text(
-                      "Sign Up",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    onPressed: authState.isLoading ? null : _handleSignup,
+                    child: authState.isLoading
+                        ? const SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : const Text(
+                            "Sign Up",
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                   ),
                 ),
 
